@@ -1,0 +1,144 @@
+<script src="js/LoadingAnimation.js" type="text/javascript"></script>
+
+<script>
+// badge background color
+var RED_COLOR = [255, 0, 0, 0];
+var BLUE_COLOR = [0, 0, 255, 0];
+// forum base url
+var BASE_URL = 'http://www.playsc.com/bbs/forum.php';
+
+threadList = {};	
+unreadThreadNum = 0;
+
+// set badge background color
+chrome.browserAction.setBadgeBackgroundColor({color: BLUE_COLOR});	
+
+// badge loading animation
+var loadingAnimation = new LoadingAnimation();
+loadingAnimation.start();
+
+/**
+ * ThreadObject struct
+ * <pre>
+ * {	
+ *   id: {string} Thread id,
+ *   title: {string} Thread title,
+ *   url: {string} Thread url,
+ *   author: {string} Thread author,
+ *   date: {string} Post date,
+ *   num: {int} Number of reply
+ * }
+ * </pre>
+ */
+
+/**
+ * return array of thread
+ * @return array<ThreadObject>
+ */
+var getThreadList = function(){
+	return threadList;
+};
+
+/**
+ * add a thread
+ * @param {ThreadObject}
+ */
+var addThread = function(thread){
+	if (!threadList[thread.id] || threadList[thread.id].readed) {
+		++unreadThreadNum;
+	}
+	threadList[thread.id] = thread;
+	chrome.browserAction.setBadgeText({text: unreadThreadNum+''});
+};
+
+/**
+ * set a thread as readed
+ * @param {string} id Thread id
+ */
+var readThread = function(id){
+	if (threadList[id] && !threadList[id].readed) {
+		threadList[id].readed = true;
+		--unreadThreadNum;
+		var text = unreadThreadNum > 0 ? unreadThreadNum+'' : '';
+		chrome.browserAction.setBadgeText({text: text});
+	}
+};
+
+/** 
+ * set all threads as readed
+ */
+var readAllThread = function(){
+	for (var k in threadList) {
+		threadList[k].readed = true;
+		unreadThreadNum = 0;
+		chrome.browserAction.setBadgeText({text: ''});
+	}
+};
+
+/*
+ * parse threads form html source
+ * @param {source} string
+ * @return array<ThreadObject>
+ */
+function parseThread(source){
+	var obj = JSON.parse(source);
+	var threads = [];
+	obj.forEach(function(item) {
+		threads.push({id: item.id, title: item.title, url: item.url, num: item.replies});
+	});
+	return threads;
+}
+
+
+// handle the user action on webpage
+var updateHandle = function(tabId, info, tab){
+	if (info.url) {
+		var id = info.url.match(/v2ex.*\/t\/([0-9]*)/\1)[1];
+		// read a thread on webpage
+		if (id) {
+			readThread(id);
+		}
+	}
+}
+chrome.tabs.onUpdated.addListener(updateHandle);
+
+// xhr instance
+var xhr = new XMLHttpRequest();
+var text;
+var handleStateChange = function(){
+	if (xhr.readyState == 4) {
+		if (loadingAnimation) {
+			loadingAnimation.stop();
+			loadingAnimation = null;
+			chrome.browserAction.setBadgeBackgroundColor({color: RED_COLOR});	
+		}
+		var threads = parseThread(xhr.responseText);
+		threads.forEach(function(item){
+			if (threadList[item.id]) {
+				if (threadList[item.id].num < item.num) {
+					addThread(item);	
+				}	
+				
+			} else {
+				addThread(item);	
+			}
+		});
+	}
+}
+xhr.onreadystatechange = handleStateChange;
+
+/**
+ * send a xhr request
+ */
+var XHR_URL = "http://v2ex.appspot.com/api/topics/latest.json";
+var requestThread = function(){
+	xhr.open("GET", XHR_URL, true);
+	xhr.send();
+};
+
+requestThread();
+
+var DURATION = 15;
+setInterval("requestThread()", DURATION*60*1000);
+
+</script>

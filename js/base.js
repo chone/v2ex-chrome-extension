@@ -1,0 +1,2 @@
+var mem = {};
+mem.ui = {};

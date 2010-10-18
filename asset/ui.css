@@ -1,0 +1,142 @@
+.ui-menubar {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAAcElEQVR42u3YYQYAIBiD4d3/KN0pSSRJJImkdZB947nA+3NwzlEZKD4LYAEsgHiA9x6V4d5LZTjnUBn23lSGtRaVYc5JZRhjUBl671SG1hqVodZKZSilUBlyzlSGlBKVIcZIZQghUBm891RmAdRv8Q8+U3zLFCicDAAAAABJRU5ErkJggg==) repeat-x 0px 0px;
+	height: 24px;
+	overflow: hidden;
+	position: relative;
+}
+
+.ui-menuitem {
+	height: 22px;
+	line-height: 22px;
+	padding: 0 8px;
+	text-align: center;
+	color: #444;
+	border-right: #c5c5c5 1px solid;
+	border-top: #aaaaaa 1px solid;
+	border-bottom: #aaaaaa 1px solid;
+	border-left: #f1f1f1 1px solid;
+	float: left;
+	cursor:pointer;
+	display:block;
+	text-decoration: none;
+}
+
+.ui-menuitem:hover {
+	border: #666 1px solid;
+}
+
+.ui-listcell {
+	border-bottom: 1px solid #EEE;
+	border-left: 1px solid white;
+	border-top: 1px solid #EEE;
+	clear: both;
+	cursor: pointer;
+	height: 32px;
+	line-height: 1.2;
+	margin-bottom: -1px;
+	overflow: hidden;
+	padding: 3px 78px 3px 6px;
+	position: relative;
+	color:#000;
+	display:block;
+	background: #fff;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: left;
+} 
+
+.ui-listcell .date,
+.ui-listcell .rank {
+	height: 50%;
+	line-height: 1.6em;
+	position: absolute;
+	right: 6px;
+	width: 65px;
+	padding:0;
+	border: none;
+	font-weight: normal;
+	/*font-size: 11px;*/
+	color: #333;
+	display: block;
+}
+
+.ui-listcell .date {
+	bottom: 0px;
+}
+
+.ui-listcell .rank {
+	top: 0px;
+	text-align: right;
+}
+
+.ui-listcell .author {
+	color: #666;
+}
+
+.ui-listcell .rank span {
+	padding:0 6px;
+	background:#1C7FDB;
+	color:#fff;
+	height: 14px;
+	line-height: 14px;
+	border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	display:block;
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	
+}
+
+* html .ui-listcell .date {
+	bottom: 0;
+}
+
+.ui-listcell-readed,
+.ui-listcell-readed .date,
+.ui-listcell-readed .rank,
+.ui-listcell-readed .rank span {
+	font-weight: normal;
+	color: #333;
+}
+
+.ui-listcell-readed .rank span {
+	background: none;
+}
+
+.ui-listcell:hover,
+.ui-listcell:hover .date,
+.ui-listcell:hover .rank {
+	background: #eee;
+	color: #000;
+	zoom:1;
+	text-decoration: none;
+}
+
+.ui-listcell-selected,
+.ui-listcell-selected:hover,
+.ui-listcell-selected .date,
+.ui-listcell-selected .rank span,
+.ui-listcell-selected .rank,
+.ui-listcell-selected:hover .date,
+.ui-listcell-selected:hover .rank span,
+.ui-listcell-selected:hover .rank {
+	background: #789e35;
+	color:#fff;
+}
+
+/* mem.ui.ScrollBar START */
+.ui-scrollbar {
+	background: #ddd;
+}
+
+.ui-scrollbar-thumb {
+	background: #63abfe;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	cursor: pointer;
+}
+/* mem.ui.ScrollBar END */
+
